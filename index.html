@@ -128,6 +128,14 @@
         }
       }
 
+      .intro-greeting {
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: hsl(var(--ink));
+        margin: 0 0 8px;
+      }
+
       .intro-headline {
         font-size: 1.75rem;
         line-height: 1.15;
@@ -332,18 +340,6 @@
         margin-bottom: 0;
       }
 
-      .slider-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        margin-bottom: 8px;
-      }
-
-      .slider-value {
-        font-size: 0.9375rem;
-        font-weight: 600;
-      }
-
       .info-tip {
         display: inline-flex;
         align-items: center;
@@ -415,6 +411,35 @@
         cursor: pointer;
         border: 3px solid hsl(var(--paper));
         box-shadow: 0 0 0 1px hsl(var(--ink));
+      }
+
+      .slider-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .slider-row input[type="range"] {
+        flex: 1 1 auto;
+      }
+
+      .slider-row .slider-num {
+        flex: 0 0 auto;
+        width: 96px;
+        font-family: inherit;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: hsl(var(--ink));
+        background: hsl(var(--paper));
+        border: 1px solid hsl(var(--border));
+        border-radius: 6px;
+        padding: 7px 10px;
+        text-align: right;
+        outline: none;
+      }
+
+      .slider-row .slider-num--wide {
+        width: 140px;
       }
 
       .toggle-pair {
@@ -784,7 +809,7 @@
   <body>
     <div class="topbar">
       <a class="wordmark" href="https://cheri12345.github.io/request-access/">CHELCIE<sup>™</sup></a>
-      <a class="pill-link" href="https://cheri12345.github.io/request-access/">Exit</a>
+      <a class="pill-link" id="exitLink" href="https://cheri12345.github.io/request-access/">Exit</a>
     </div>
 
     <div class="progress-track" id="progressTrack">
@@ -808,6 +833,7 @@
         <div style="display: flex; flex-direction: column; flex: 1; width: 100%;">
           <div class="intro-body">
             <div>
+              <p class="intro-greeting" id="introGreeting" hidden></p>
               <h1 class="intro-headline">Move money faster with CHELCIE</h1>
               <p class="intro-time-estimate">Takes about 7 minutes to complete.</p>
 
@@ -881,20 +907,20 @@
               <select id="stateSelect"></select>
             </div>
             <div class="field-group">
-              <div class="slider-head">
-                <label for="yearsOperating" style="margin-bottom: 0">Years operating</label>
-                <span class="slider-value" id="yearsOperating-value">6 yrs</span>
+              <label for="yearsOperating" style="margin-bottom: 8px">Years operating</label>
+              <div class="slider-row">
+                <input type="range" id="yearsOperating" min="0" max="40" value="6" />
+                <input type="text" class="slider-num" id="yearsOperating-input" value="6 yrs" inputmode="numeric" aria-label="Years operating" />
               </div>
-              <input type="range" id="yearsOperating" min="0" max="40" value="6" />
             </div>
           </div>
 
           <div class="field-group">
-            <div class="slider-head">
-              <label for="employees" style="margin-bottom: 0">Employees</label>
-              <span class="slider-value" id="employees-value">45</span>
+            <label for="employees">Employees</label>
+            <div class="slider-row">
+              <input type="range" id="employees" min="1" max="2500" value="45" />
+              <input type="text" class="slider-num" id="employees-input" value="45" inputmode="numeric" aria-label="Employees" />
             </div>
-            <input type="range" id="employees" min="1" max="2500" value="45" />
           </div>
         </div>
       </section>
@@ -917,19 +943,19 @@
           </div>
 
           <div class="field-group">
-            <div class="slider-head">
-              <label for="capitalNeed" style="margin-bottom: 0">Capital need</label>
-              <span class="slider-value" id="capitalNeed-value">$2,500,000</span>
+            <label for="capitalNeed">Capital need</label>
+            <div class="slider-row">
+              <input type="range" id="capitalNeed" min="50000" max="40000000" step="50000" value="2500000" />
+              <input type="text" class="slider-num slider-num--wide" id="capitalNeed-input" value="$2,500,000" inputmode="numeric" aria-label="Capital need, exact dollar amount" />
             </div>
-            <input type="range" id="capitalNeed" min="50000" max="40000000" step="50000" value="2500000" />
           </div>
 
           <div class="field-group">
-            <div class="slider-head">
-              <label for="annualRevenue" style="margin-bottom: 0">Annual revenue</label>
-              <span class="slider-value" id="annualRevenue-value">$8,000,000</span>
+            <label for="annualRevenue">Annual revenue</label>
+            <div class="slider-row">
+              <input type="range" id="annualRevenue" min="250000" max="300000000" step="250000" value="8000000" />
+              <input type="text" class="slider-num slider-num--wide" id="annualRevenue-input" value="$8,000,000" inputmode="numeric" aria-label="Annual revenue, exact dollar amount" />
             </div>
-            <input type="range" id="annualRevenue" min="250000" max="300000000" step="250000" value="8000000" />
           </div>
 
           <div class="field-group">
@@ -960,37 +986,37 @@
           <h2 class="data-title">A few readiness signals</h2>
 
           <div class="field-group">
-            <div class="slider-head">
-              <label for="daysCash" style="margin-bottom: 0">Cash reserve, in days of operating costs</label>
-              <span class="slider-value" id="daysCash-value">47 days</span>
+            <label for="daysCash">Cash reserve, in days of operating costs</label>
+            <div class="slider-row">
+              <input type="range" id="daysCash" min="0" max="240" value="47" />
+              <input type="text" class="slider-num" id="daysCash-input" value="47 days" inputmode="numeric" aria-label="Cash reserve, in days" />
             </div>
-            <input type="range" id="daysCash" min="0" max="240" value="47" />
           </div>
 
           <div class="field-group">
-            <div class="slider-head">
-              <label for="dscr" style="margin-bottom: 0">How well income covers debt payments</label>
-              <span class="slider-value" id="dscr-value">1.32&times;</span>
+            <label for="dscr">How well income covers debt payments</label>
+            <div class="slider-row">
+              <input type="range" id="dscr" min="0" max="300" value="132" />
+              <input type="text" class="slider-num" id="dscr-input" value="1.32&times;" inputmode="decimal" aria-label="Debt service coverage ratio" />
             </div>
-            <input type="range" id="dscr" min="0" max="300" value="132" />
           </div>
 
           <div class="field-group">
-            <div class="slider-head">
-              <label for="matchPct" style="margin-bottom: 0">Non-federal funds you can contribute</label>
-              <span class="slider-value" id="matchPct-value">15%</span>
+            <label for="matchPct">Non-federal funds you can contribute</label>
+            <div class="slider-row">
+              <input type="range" id="matchPct" min="0" max="50" value="15" />
+              <input type="text" class="slider-num" id="matchPct-input" value="15%" inputmode="numeric" aria-label="Non-federal match, percent" />
             </div>
-            <input type="range" id="matchPct" min="0" max="50" value="15" />
           </div>
 
           <div class="field-group">
-            <div class="slider-head">
-              <label for="samMonths" style="margin-bottom: 0">Time registered with SAM.gov
-                <span class="info-tip" tabindex="0">?<span class="tip-bubble">The federal System for Award Management registry, required for most federal funding.</span></span>
-              </label>
-              <span class="slider-value" id="samMonths-value">14 mo</span>
+            <label for="samMonths">Time registered with SAM.gov
+              <span class="info-tip" tabindex="0">?<span class="tip-bubble">The federal System for Award Management registry, required for most federal funding.</span></span>
+            </label>
+            <div class="slider-row">
+              <input type="range" id="samMonths" min="0" max="36" value="14" />
+              <input type="text" class="slider-num" id="samMonths-input" value="14 mo" inputmode="numeric" aria-label="Time registered with SAM.gov, in months" />
             </div>
-            <input type="range" id="samMonths" min="0" max="36" value="14" />
           </div>
 
           <div class="row-2">
@@ -1047,10 +1073,10 @@
       <!-- SUCCESS / WELCOME -->
       <section class="screen" id="screen-success">
         <div class="success-wrap">
-          <h2 class="welcome-title">Welcome, Jordan!</h2>
-          <p class="welcome-sub">Your request is in review. Here's how to get ready while you wait.</p>
+          <h2 class="welcome-title">Welcome, Amy!</h2>
+          <p class="welcome-sub" style="display: none">Your request is in review. Here's how to get ready while you wait.</p>
 
-          <div class="status-banner">
+          <div class="status-banner" style="display: none">
             <span class="dot"></span>
             <div>
               <strong style="font-size: 0.9375rem;">Request submitted</strong>
@@ -1058,7 +1084,7 @@
             </div>
           </div>
 
-          <div class="next-steps-grid">
+          <div class="next-steps-grid" style="display: none">
             <div class="next-step-card">
               <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
               <h4>Explore matched programs</h4>
@@ -1093,6 +1119,13 @@
         var PHASE_WEIGHT = { d1: 1, d2: 1, d3: 1, d4: 1, d5: 1 };
         var idx = 0;
         var files = [];
+
+        var incomingName = new URLSearchParams(window.location.search).get("name");
+        if (incomingName) {
+          var greeting = document.getElementById("introGreeting");
+          greeting.textContent = "Welcome, " + incomingName + ".";
+          greeting.hidden = false;
+        }
 
         var US_STATES = [
           "Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware",
@@ -1134,21 +1167,50 @@
         });
 
         function fmtMoney(n) { return "$" + Number(n).toLocaleString("en-US"); }
-        function bindSlider(id, formatter) {
-          var input = document.getElementById(id);
-          var out = document.getElementById(id + "-value");
-          function update() { out.textContent = formatter(input.value); }
-          input.addEventListener("input", update);
-          update();
+
+        function bindSlider(id, formatter, opts) {
+          opts = opts || {};
+          var toHuman = opts.toHuman || function (v) { return Number(v); };
+          var toRaw = opts.toRaw || function (v) { return v; };
+          var range = document.getElementById(id);
+          var num = document.getElementById(id + "-input");
+
+          function display() { num.value = formatter(range.value); }
+
+          function parseHuman(str) {
+            var m = String(str).replace(/,/g, "").match(/-?\d*\.?\d+/);
+            return m ? Number(m[0]) : 0;
+          }
+
+          range.addEventListener("input", function () {
+            if (document.activeElement !== num) display();
+          });
+
+          num.addEventListener("focus", function () {
+            num.value = toHuman(range.value);
+            num.select();
+          });
+
+          num.addEventListener("input", function () {
+            range.value = toRaw(parseHuman(num.value));
+          });
+
+          num.addEventListener("blur", display);
+
+          display();
         }
+
         bindSlider("yearsOperating", function (v) { return v + " yrs"; });
         bindSlider("employees", function (v) { return v; });
         bindSlider("capitalNeed", fmtMoney);
         bindSlider("annualRevenue", fmtMoney);
         bindSlider("daysCash", function (v) { return v + " days"; });
-        bindSlider("dscr", function (v) { return (v / 100).toFixed(2) + "×"; });
+        bindSlider("dscr", function (v) { return (v / 100).toFixed(2) + "×"; }, {
+          toHuman: function (v) { return Number((v / 100).toFixed(2)); },
+          toRaw: function (v) { return Math.round(v * 100); }
+        });
         bindSlider("matchPct", function (v) { return v + "%"; });
-        bindSlider("samMonths", function (v) { return v == 0 ? "Not registered" : v + " mo"; });
+        bindSlider("samMonths", function (v) { return v + " mo"; });
 
         var dropzone = document.getElementById("dropzone");
         var fileInput = document.getElementById("fileInput");
@@ -1283,6 +1345,7 @@
           var hideChrome = key === "intro" || key === "success";
           footer.style.display = hideChrome ? "none" : "block";
           document.getElementById("progressTrack").style.display = hideChrome ? "none" : "grid";
+          document.getElementById("exitLink").style.display = key === "success" ? "none" : "";
           document.getElementById("backBtn").style.visibility = idx === 0 ? "hidden" : "visible";
           var NEXT_SCREEN_LABEL = { d1: "funding need", d2: "financial readiness", d3: "documents", d4: "review" };
           document.getElementById("nextBtn").textContent = key === "d5" ? "Submit request" : "Continue to " + NEXT_SCREEN_LABEL[key];
